@@ -138,3 +138,6 @@ models/*
 
 #config file has sensitive data
 .mlflow_uri
+
+#meta-data
+.DS_Store
