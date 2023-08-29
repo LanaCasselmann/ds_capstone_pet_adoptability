@@ -92,3 +92,12 @@ def our_metrics(y_true, y_pred, normalize=True):
 #     print("_____________________")
 #     print('Weighted Quadratic Kappa:', round(cohen_kappa_score(y_true, y_pred, weights='quadratic'), 4)) 
     
+    
+def model_hyperparams(fitted_model):
+  """
+  returns set model hyperparams
+  required arguments: fitted model
+  """
+  # return used hyperparameters as df:  
+  df_model_params = pd.DataFrame.from_dict(fitted_model.get_params(), orient="index", columns=['set hyperparams'])
+  display(df_model_params)
