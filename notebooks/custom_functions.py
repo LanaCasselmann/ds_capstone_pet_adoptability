@@ -101,3 +101,40 @@ def model_hyperparams(fitted_model):
   # return used hyperparameters as df:  
   df_model_params = pd.DataFrame.from_dict(fitted_model.get_params(), orient="index", columns=['set hyperparams'])
   display(df_model_params)
+
+
+
+# metrics for cats
+def our_metrics_cats(y_true_cats, y_pred_cats, normalize=True): 
+    print('**********************************************************************')
+    print(f'Weighted Quadratic Kappa for Cats: \
+               {round(cohen_kappa_score(y_true_cats, y_pred_cats, weights="quadratic"),4)} \n(Accuracy for Cats: {(round(accuracy_score(y_true_cats, y_pred_cats), 4))})')
+    
+
+
+# metrics for dogs
+def our_metrics_dogs(y_true_dogs, y_pred_dogs, normalize=True): 
+        print('**********************************************************************')
+        print(f'Weighted Quadratic Kappa for Dogs: \
+               {round(cohen_kappa_score(y_true_dogs, y_pred_dogs, weights="quadratic"),4)} \n(Accuracy for Dogs: {(round(accuracy_score(y_true_dogs, y_pred_dogs), 4))})')
+
+def comb_metrics(y_true_dogs, y_pred_dogs, y_true_cats, y_pred_cats):
+    from sklearn.metrics import cohen_kappa_score
+    kappa_cats = cohen_kappa_score(y_true_cats, y_pred_cats, weights="quadratic")
+    accuracy_cats = accuracy_score(y_true_cats, y_pred_cats)
+    nr_cats = len(y_true_cats)
+    kappa_dogs = cohen_kappa_score(y_true_dogs, y_pred_dogs, weights="quadratic")
+    accuracy_dogs = accuracy_score(y_true_dogs, y_pred_dogs)
+    nr_dogs = len(y_true_dogs)
+    combined_kappa = ((kappa_dogs * nr_dogs) + (kappa_cats * nr_cats)) / (nr_dogs + nr_cats)
+    combined_accuracy = ((accuracy_dogs * nr_dogs) + (accuracy_cats * nr_cats)) / (nr_dogs + nr_cats)
+    print('**********************************************************************')
+    print('**********************************************************************')
+    print(f'Combined Kappa: {combined_kappa}\n(Combined Accuracy: {combined_accuracy})')
+
+def combined_metrics(y_true_dogs, y_pred_dogs, y_true_cats, y_pred_cats):
+    from sklearn.metrics import cohen_kappa_score
+    our_metrics_cats(y_true_cats, y_pred_cats)
+    our_metrics_dogs(y_true_dogs, y_pred_dogs)
+    comb_metrics(y_true_dogs, y_pred_dogs, y_true_cats, y_pred_cats)
+
