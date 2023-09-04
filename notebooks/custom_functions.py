@@ -54,14 +54,52 @@ def our_metrics(y_true, y_pred, normalize=True):
     print('Weighted Quadratic Kappa:', round(cohen_kappa_score(y_true, y_pred, weights='quadratic'), 4)) 
     
     
-    # #print('F1-score:', round(f1_score(y_true, y_pred), 4))
-    # print("_____________________")
-    # print('Fbeta_score with beta=1.5:', round(fbeta_score(y_true, y_pred, beta=1.5), 4)) 
-    # print("_____________________")
-    # print('Fbeta_score with beta=2:', round(fbeta_score(y_true, y_pred, beta=2), 4)) 
-    # print("_____________________")
-    # print('Fbeta_score with beta=3:', round(fbeta_score(y_true, y_pred, beta=3), 4)) 
-    # print("_____________________")
-    # print('Recall', round(recall_score(y_true, y_pred), 4))
-    # print("_____________________")
-    # print('Specificity', round(recall_score(y_true, y_pred, pos_label=0), 4))
+# func to evaluate cat and dog models
+
+# metrics for cats
+def our_metrics_cats(y_true_cats, y_pred_cats, normalize=True): 
+    print('**********************************************************************')
+    print(f'Weighted Quadratic Kappa for Cats: \
+               {round(cohen_kappa_score(y_true_cats, y_pred_cats, weights="quadratic"),4)} \n(Accuracy for Cats: {(round(accuracy_score(y_true_cats, y_pred_cats), 4))})')
+# metrics for dogs
+def our_metrics_dogs(y_true_dogs, y_pred_dogs, normalize=True): 
+        print('**********************************************************************')
+        print(f'Weighted Quadratic Kappa for Dogs: \
+               {round(cohen_kappa_score(y_true_dogs, y_pred_dogs, weights="quadratic"),4)} \n(Accuracy for Dogs: {(round(accuracy_score(y_true_dogs, y_pred_dogs), 4))})')
+def comb_metrics(y_true_dogs, y_pred_dogs, y_true_cats, y_pred_cats, normalize=True):
+    # conf-matrices dogs and cats
+    cm_dogs = confusion_matrix(y_true_dogs, y_pred_dogs)
+    cm_cats = confusion_matrix(y_true_cats, y_pred_cats)
+    if normalize:
+        cm_dogs = cm_dogs.astype('float') / cm_dogs.sum(axis=1)[:, np.newaxis]
+        cm_cats = cm_cats.astype('float') / cm_cats.sum(axis=1)[:, np.newaxis]
+        fig,ax = plt.subplots(1,2,figsize=(15,5))
+        sns.heatmap(ax=ax[0], data=cm_dogs, annot=True)
+        sns.heatmap(ax=ax[1], data=cm_cats, annot=True)
+        ax[0].set_title('Normalized CM Dogs')
+        ax[1].set_title('Normalized CM Cats')
+        fig.tight_layout(pad=3)
+    else:
+        sns.heatmap(ax=ax[0],data=cm_dogs, annot=True)
+        sns.heatmap(ax=ax[1], data=cm_cats, annot=True)
+        ax[0].set_title('CM Dogs')
+        ax[1].set_title('CM Cats')
+        fig.tight_layout(pad=3)
+    #combined metrics
+    kappa_cats = cohen_kappa_score(y_true_cats, y_pred_cats, weights="quadratic")
+    accuracy_cats = accuracy_score(y_true_cats, y_pred_cats)
+    nr_cats = len(y_true_cats)
+    kappa_dogs = cohen_kappa_score(y_true_dogs, y_pred_dogs, weights="quadratic")
+    accuracy_dogs = accuracy_score(y_true_dogs, y_pred_dogs)
+    nr_dogs = len(y_true_dogs)
+    combined_kappa = ((kappa_dogs * nr_dogs) + (kappa_cats * nr_cats)) / (nr_dogs + nr_cats)
+    combined_accuracy = ((accuracy_dogs * nr_dogs) + (accuracy_cats * nr_cats)) / (nr_dogs + nr_cats)
+    print('**********************************************************************')
+    print('**********************************************************************')
+    print(f'Combined Kappa: {combined_kappa}\n(Combined Accuracy: {combined_accuracy})')
+
+def cat_dog_metrics(y_true_dogs, y_pred_dogs, y_true_cats, y_pred_cats):
+    from sklearn.metrics import cohen_kappa_score
+    our_metrics_cats(y_true_cats, y_pred_cats)
+    our_metrics_dogs(y_true_dogs, y_pred_dogs)
+    comb_metrics(y_true_dogs, y_pred_dogs, y_true_cats, y_pred_cats)
