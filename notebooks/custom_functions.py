@@ -71,10 +71,10 @@ def comb_metrics(y_true_dogs, y_pred_dogs, y_true_cats, y_pred_cats, normalize=T
     """Gives accuracy and quadratic kappa score as well as confusion matrix of the entered cats and dogs data set as well as of the combined data.
 
     Args:
-        y_true_dogs (pandas.Series): true target observations for dogs in data set
-        y_pred_dogs (pandas.Series): predicted target observations for dogs in data set
-        y_true_cats (pandas.Series): true target observations for cats in data set
-        y_pred_cats (pandas.Series): predicted target observations for cats in data set
+        y_true_dogs (array_like): true target observations for dogs in data set
+        y_pred_dogs (array_like): predicted target observations for dogs in data set
+        y_true_cats (array_like): true target observations for cats in data set
+        y_pred_cats (array_like): predicted target observations for cats in data set
         normalize (bool, optional): determines whether the confusion matrices are returned with absolute values or normalized . Defaults to True.
     """
     # conf-matrices dogs and cats
