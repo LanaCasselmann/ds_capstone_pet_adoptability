@@ -54,7 +54,7 @@ app = Dash(__name__)
 
 app.layout = html.Div([
     html.H1(children='Paw Predictors', style={'textAlign':'center'}),
-    dcc.Dropdown(df_processed.type.unique(), id='dropdown-selection'),#'Canada', id='dropdown-selection'),
+    dcc.Dropdown(df_processed.type.unique(),1, id='dropdown-selection'),
     dcc.Graph(id='graph-content')
 ])
 
@@ -63,8 +63,9 @@ app.layout = html.Div([
     Input('dropdown-selection', 'value')
 )
 def update_graph(value):
-    dff = df_processed[df_processed.type==value]
-    return px.scatter(dff, x='age_bin', y='adoptionspeed') # line(dff, x='year', y='pop')
+    dff = pd.crosstab(df_processed[df_processed.type==value]["photoamt_11"], df_processed[df_processed.type==value]["adoptionspeed"],normalize="index")
+    return  px.line(dff)#, x='year', y='pop')
+# pd.crosstab(df_processed[df_processed.type==value]["photoamt_11"], df_processed[df_processed.type==value]["adoptionspeed"]#,normalize="index").plot.line()
 
 if __name__ == '__main__':
     app.run(debug=True)
