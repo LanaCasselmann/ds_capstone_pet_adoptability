@@ -1,13 +1,17 @@
 import streamlit as st
 import pandas as pd
 import pickle
+from PIL import Image
+import os
+#st.write(os.getcwd())
+ppp = Image.open('./notebooks/ppp.jpg')
+st.image(ppp)
 
 st.write("""
 # Paw Predictors
 Predicting the Adoption Speed of Shelter Animals
-Hello *world!*
 """)
- 
+
 # df = pd.read_csv("my_data.csv")
 # st.line_chart(df)
 
