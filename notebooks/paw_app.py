@@ -6,6 +6,44 @@ import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+
+# global print settings
+# set seaborn options globally
+colors = ['#365b6d', '#41c1ba', '#289dd2', '#6c9286', '#f2f1ec', '#fa9939']
+custom_palette = sns.set_palette(sns.color_palette(colors))
+custom_params = {"axes.facecolor": "#f2f1ec", 
+"figure.facecolor": "#f2f1ec",
+'figure.titleweight': 'bold',
+'figure.titlesize': 28,#'large',
+'grid.alpha': 1.0,
+'font.size': 16.0,
+'font.weight': 'bold',
+'axes.labelsize': 16,
+'axes.labelcolor': '#365b6d',
+'axes.titlepad': 10.0,
+'axes.titlesize': 'large',
+'xtick.labelsize': 16,
+'xtick.color': '#365b6d',
+'xtick.bottom': True,
+'ytick.labelsize': 16,
+'ytick.color': '#365b6d',
+'ytick.left': True,
+'text.color' : '#365b6d',
+#'legend.labelcolor': '#365b6d',
+'legend.title_fontsize': 12.0,
+'legend.frameon': False,
+'axes.linewidth': 3,#0.8,
+'axes.spines.left': True,
+'axes.spines.bottom': True,
+'axes.spines.right': True,
+'axes.spines.top': True,
+'axes.edgecolor': '#365b6d',
+'axes.labelweight': 'bold',
+'axes.titleweight': 'bold',
+'patch.edgecolor': '#f2f1ec'
+}
+sns.set_theme(style="white", palette=colors, rc=custom_params)
+
 #st.write(os.getcwd())
 ppp = Image.open('./notebooks/ppp.jpg')
 st.image(ppp)
@@ -118,7 +156,7 @@ if saved:
     prediction_string_list = ["The predicted adoption time is < 1 week","The predicted adoption time is between 1 week and 1 month","The predicted adoption time is between 1 and 3 month","The animal will likely not be adopted within 100 days"]
     st.write(f'{prediction_string_list[int(y_pred)]}')
     #st.write('The predicted Adoption Speed is ', y_pred, '.')
-    st.write(f'The Distribution of Adoption Speeds for Animals that are {type_in}s')
+    #st.write(f'The Distribution of Adoption Speeds for {type_in}s')
     fig = plt.figure(figsize=(20,8))
     speed_plot = sns.histplot(
     data=df_comb.query('type==@type_bin'), 
@@ -129,7 +167,7 @@ if saved:
     )
     plt.xlabel('Adoptionspeed')
     #plt.ylabel('Accuracy')
-    #plt.title('Model Performance on Target Groups')#, fontsize=24)
+    plt.title(f'The Distribution of Adoption Speeds for {type_in}s')#, fontsize=24)
     for g in speed_plot.patches:
         speed_plot.annotate(format(g.get_height(), '.2f'),
                     (g.get_x() + g.get_width() / 2., g.get_height()),
@@ -142,4 +180,4 @@ if saved:
     speed_plot.set_xticklabels(['First Week','First Month','First Three Month','Not Adopted after 100 Days'])
     # Display the plot in Streamlit
     st.pyplot(speed_plot.get_figure())
-    plt.show();
+    #plt.show();
