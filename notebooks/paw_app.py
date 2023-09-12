@@ -101,4 +101,7 @@ if saved:
             'description_char' : [description_char]}
     df_new = pd.DataFrame(data=d)
     y_pred = loaded_model.predict(df_new)
-    st.write('The predicted Adoption Speed is ', y_pred, '.')
+    st.write("# Prediction:")
+    prediction_string_list = ["The predicted adoption time is < 1 week","The predicted adoption time is between 1 week and 1 month","The predicted adoption time is between 1 and 3 month","The animal will likely not be adopted within 100 days"]
+    st.write(f'{prediction_string_list[int(y_pred)]}')
+    #st.write('The predicted Adoption Speed is ', y_pred, '.')
