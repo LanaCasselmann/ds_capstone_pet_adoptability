@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import pickle
 from PIL import Image
+import seaborn as sns
+import numpy as np
+import matplotlib.pyplot as plt
 import os
 #st.write(os.getcwd())
 ppp = Image.open('./notebooks/ppp.jpg')
@@ -79,6 +82,12 @@ description_char = len(description_in)
 # save input data
 saved = st.button('Predict')
 
+X_train_comb = pd.read_csv('data/petfinder-adoption-prediction/train/X_train_minmax_scaled_processed.csv')
+y_train_comb = pd.read_csv('data/petfinder-adoption-prediction/train/y_train.csv')
+
+df_comb = X_train_comb.copy()
+df_comb['adoptionspeed']=y_train_comb
+
 if saved:
     # save values in dataframe
     d =     {'type' : [type_bin],
@@ -109,3 +118,28 @@ if saved:
     prediction_string_list = ["The predicted adoption time is < 1 week","The predicted adoption time is between 1 week and 1 month","The predicted adoption time is between 1 and 3 month","The animal will likely not be adopted within 100 days"]
     st.write(f'{prediction_string_list[int(y_pred)]}')
     #st.write('The predicted Adoption Speed is ', y_pred, '.')
+    st.write(f'The Distribution of Adoption Speeds for Animals that are {type_in}s')
+    fig = plt.figure(figsize=(20,8))
+    speed_plot = sns.histplot(
+    data=df_comb.query('type==@type_bin'), 
+    x='adoptionspeed', stat='proportion', discrete=True,
+#    y = 'accuracy',
+    color='#41c1ba',
+    shrink=.8
+    )
+    plt.xlabel('Adoptionspeed')
+    #plt.ylabel('Accuracy')
+    #plt.title('Model Performance on Target Groups')#, fontsize=24)
+    for g in speed_plot.patches:
+        speed_plot.annotate(format(g.get_height(), '.2f'),
+                    (g.get_x() + g.get_width() / 2., g.get_height()),
+                    ha = 'center', va = 'center',
+                    xytext = (0, -20),
+                    textcoords = 'offset points',
+                    color = '#f2f1ec')
+    plt.xticks(ticks=np.linspace(1,4,4))
+    plt.xlim([0.5, 4.5])
+    speed_plot.set_xticklabels(['First Week','First Month','First Three Month','Not Adopted after 100 Days'])
+    # Display the plot in Streamlit
+    st.pyplot(speed_plot.get_figure())
+    plt.show();
