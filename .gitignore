@@ -141,3 +141,6 @@ models/*
 
 #meta-data
 .DS_Store
+
+# pickled data
+*.sav
