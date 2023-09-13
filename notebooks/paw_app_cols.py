@@ -47,6 +47,10 @@ custom_params = {"axes.facecolor": "#f2f1ec",
 }
 sns.set_theme(style="white", palette=colors, rc=custom_params)
 
+
+#share preview settings
+st.set_page_config(page_title="Paw Predictors", page_icon='./notebooks/ppp_cropped.png')
+
 #st.write(os.getcwd())
 #ppp = Image.open('./notebooks/ppp_cropped.png')
 ppp = Image.open('./notebooks/cat_dog_pair.png')
