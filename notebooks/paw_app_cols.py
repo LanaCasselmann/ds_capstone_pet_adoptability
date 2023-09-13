@@ -48,7 +48,8 @@ custom_params = {"axes.facecolor": "#f2f1ec",
 sns.set_theme(style="white", palette=colors, rc=custom_params)
 
 #st.write(os.getcwd())
-ppp = Image.open('./notebooks/ppp_cropped.png')
+#ppp = Image.open('./notebooks/ppp_cropped.png')
+ppp = Image.open('./notebooks/cat_dog_pair.png')
 st.sidebar.image(ppp)
 
 
@@ -72,40 +73,40 @@ loaded_scaler = pickle.load(open('notebooks/scaler.sav', 'rb'))
 
 col1, col2, col3 = st.columns(3)
 with col1: 
-    type_in = st.radio(label='#### Type of Animal', options=['Cat', 'Dog'])
+    type_in = st.radio(label='##### Type of Animal', options=['Cat', 'Dog'])
     type_bin = 0 if type_in == 'Dog' else 1
 
-    gender_in = st.radio(label='#### Sex of Animal', options=['Male', 'Female'])
+    gender_in = st.radio(label='##### Sex of Animal', options=['Male', 'Female'])
     gender_bin = 0 if gender_in == 'Male' else 1
 
-    sterilized_in = st.radio(label='#### Is the Animal sterilized?', options=['No','Yes'])
+    sterilized_in = st.radio(label='##### Is the Animal sterilized?', options=['No','Yes'])
     sterilized_in_bin = 0 if sterilized_in == 'Yes' else 1
 
-    breed_type_in = st.radio(label='#### Is the Animal pure or mixed breed?', options=['Pure', 'Mixed'])
+    breed_type_in = st.radio(label='##### Is the Animal pure or mixed breed?', options=['Pure', 'Mixed'])
     breed_type_bin = 0 if breed_type_in == 'Pure' else 1
 
-    vaccinated_dewormed_in = st.radio(label='#### Is the Animal Dewormed and Vaccinated?', options=['Neither','Partly','Fully'])
+    vaccinated_dewormed_in = st.radio(label='##### Is the Animal Dewormed and Vaccinated?', options=['Neither','Partly','Fully'])
     vaccinated_dewormed_bin = 0 if vaccinated_dewormed_in == 'Fully' else 1 if vaccinated_dewormed_in == 'Partly' else 2
 
     
 with col2:
 
 
-    fee_bin_in = st.radio(label='#### Is an Adoption Fee required?', options=['No', 'Yes'])
+    fee_bin_in = st.radio(label='##### Is an Adoption Fee required?', options=['No', 'Yes'])
     fee_bin_bin = 0 if fee_bin_in == 'No' else 1
 
-    maturitysize_in = st.radio(label='#### Size of Animal at maturity', options=['Small','Medium', 'Large','Extra Large'])
+    maturitysize_in = st.radio(label='##### Size of Animal at maturity', options=['Small','Medium', 'Large','Extra Large'])
     maturitysize_0_bin = 1 if maturitysize_in == 'Small' else 0
     maturitysize_1_bin = 1 if maturitysize_in == 'Medium' else 0
     maturitysize_2_bin = 1 if maturitysize_in == 'Large' else 0
     maturitysize_3_bin = 1 if maturitysize_in == 'Extra Large' else 0
 
-    furlength_in = st.radio(label='#### Fur length', options=['Short', 'Medium', 'Long'])
+    furlength_in = st.radio(label='##### Fur length', options=['Short', 'Medium', 'Long'])
     furlength_0_bin = 1 if furlength_in == 'Short' else 0
     furlength_1_bin = 1 if furlength_in == 'Medium' else 0
     furlength_2_bin = 1 if furlength_in == 'Long' else 0
 
-    health_in = st.radio(label='#### Health Condition of Animal', options=['Healthy', 'Minor Injury', 'Serious Injury'])
+    health_in = st.radio(label='##### Health Condition of Animal', options=['Healthy', 'Minor Injury', 'Serious Injury'])
     health_0_bin = 1 if health_in == 'Healthy' else 0
     health_1_bin = 1 if health_in == 'Minor Injury' else 0
     health_2_bin = 1 if health_in == 'Serious Injury' else 0
@@ -113,16 +114,16 @@ with col2:
 
 
 with col3:
-    color_pattern_in = st.radio(label='#### Color Pattern of Animal', options=['Dark', 'Light', 'Mixed'])
+    color_pattern_in = st.radio(label='##### Color Pattern of Animal', options=['Dark', 'Light', 'Mixed'])
     color_pattern_0_bin = 1 if color_pattern_in == 'Dark' else 0
     color_pattern_1_bin = 1 if color_pattern_in == 'Light' else 0
     color_pattern_2_bin = 1 if color_pattern_in == 'Mixed' else 0
 
-    photoamt_in = st.slider('#### How many Photos of the Animal are uploaded? If more than 15, please enter 15.', 0, 15, 0)
+    photoamt_in = st.slider('##### How many Photos of the Animal are uploaded? If more than 15, please enter 15.', 0, 15, 0)
     #st.write(photoamt_in, 'photos are uploaded.')
     photoamt_11_bin = photoamt_in if photoamt_in <= 11 else 11
 
-    age_in = st.slider('#### How old is the Animal (in months))? If older than 100 months, please enter 100.', 0, 100, 0)
+    age_in = st.slider('##### How old is the Animal (in months))? If older than 100 months, please enter 100.', 0, 100, 0)
     age_bin_bin = 0 if age_in <= 3 else 1 if age_in <= 12 else 2 if age_in <= 72 else 3
     #st.write('The Animal is ', age_in, 'months old.')
     # newborn: 0-3 months higher adoption speeds up to this age on average (0)
@@ -130,7 +131,7 @@ with col3:
     # adult 13-72 month (2)
     # senior: >= 73 (3)
 
-    description_in = st.text_input('#### Please enter your description text', 'Animal Description')
+    description_in = st.text_input('##### Please enter your description text', 'Animal Description')
     description_char = len(description_in)
 
 st.sidebar.header("Your entry:")
