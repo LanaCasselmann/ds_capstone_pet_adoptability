@@ -133,22 +133,40 @@ with col3:
 
     description_in = st.text_input('##### Please enter your description text', 'Animal Description')
     description_char = len(description_in)
+    st.markdown(':green[my text to be colored]')
+    #st.markdown('<span style="color:red">some *red* text</span>')
 
 st.sidebar.header("Your entry:")
-st.sidebar.text(f"""
-                Animal type: {type_in}
-                Gender: {gender_in}
-                Sterilized: {sterilized_in}
-                Breed: {breed_type_in}
-                Dewormed + Vac'ed: {vaccinated_dewormed_in}
-                Fee required?: {fee_bin_in}
-                Maturity size: {maturitysize_in}
-                Fur length: {furlength_in}
-                Health condition: {health_in}
-                Color pattern: {color_pattern_in}
-                No. of photos: {photoamt_in}
-                Age: {age_in}
-                Description length: {description_char}
+
+st.sidebar.markdown(f""" ##### :gray[
+                Animal type: {type_in}  
+                Gender: {gender_in}  
+                Sterilized: {sterilized_in}  
+                Breed: {breed_type_in}  
+                Dewormed + Vac'ed: {vaccinated_dewormed_in}  
+                Fee required?: {fee_bin_in}  
+                Maturity size: {maturitysize_in}  
+                Fur length: {furlength_in}  
+                Health condition: {health_in}  
+                Color pattern: {color_pattern_in}  
+                No. of photos: {photoamt_in}  
+                Age: {age_in}  
+                Description length: {description_char}]  
+               """)
+st.sidebar.text(f""" 
+                Animal type: {type_in}  
+                Gender: {gender_in}  
+                Sterilized: {sterilized_in}  
+                Breed: {breed_type_in}  
+                Dewormed + Vac'ed: {vaccinated_dewormed_in}  
+                Fee required?: {fee_bin_in}  
+                Maturity size: {maturitysize_in}  
+                Fur length: {furlength_in}  
+                Health condition: {health_in}  
+                Color pattern: {color_pattern_in}  
+                No. of photos: {photoamt_in}  
+                Age: {age_in}  
+                Description length: {description_char} 
                """)
 
 #{type_in}
