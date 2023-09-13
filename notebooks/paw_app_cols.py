@@ -49,8 +49,16 @@ sns.set_theme(style="white", palette=colors, rc=custom_params)
 
 
 #share preview settings
-st.set_page_config(page_title="Paw Predictors", page_icon='./notebooks/ppp_cropped.png')
+st.set_page_config(page_title="Paw Predictors", page_icon=Image.open('./notebooks/cat_dog_pair.png'))
 
+# define big font
+st.markdown("""
+<style>
+.big-font {
+    font-size:24px !important;
+}
+</style>
+""", unsafe_allow_html=True)
 #st.write(os.getcwd())
 #ppp = Image.open('./notebooks/ppp_cropped.png')
 ppp = Image.open('./notebooks/cat_dog_pair.png')
@@ -73,7 +81,17 @@ loaded_scaler = pickle.load(open('notebooks/scaler.sav', 'rb'))
 # result = loaded_model.score(X_test, Y_test)
 # print(result)
 
-#st.write('#### Type of Animal')
+# reduce/set whitespace on top/sides/bottom # left=left of sidebar
+st.markdown("""
+        <style>
+               .block-container {
+                    padding-top: 1rem;
+                    padding-bottom: 1rem;
+                    padding-left: 1.5rem; 
+                    padding-right: 1rem;
+                }
+        </style>
+        """, unsafe_allow_html=True)
 
 col1, col2, col3 = st.columns(3)
 with col1: 
@@ -92,7 +110,6 @@ with col1:
     vaccinated_dewormed_in = st.radio(label='##### Is the Animal Dewormed and Vaccinated?', options=['Neither','Partly','Fully'])
     vaccinated_dewormed_bin = 0 if vaccinated_dewormed_in == 'Fully' else 1 if vaccinated_dewormed_in == 'Partly' else 2
 
-    
 with col2:
 
 
@@ -136,11 +153,44 @@ with col3:
     # senior: >= 73 (3)
 
     description_in = st.text_input('##### Please enter your description text', 'Animal Description')
+    #st.text_input.markdown(""" :gray[Please enter your description text]""", 'Animal Description')
     description_char = len(description_in)
-    st.markdown(':green[my text to be colored]')
-    #st.markdown('<span style="color:red">some *red* text</span>')
 
-st.sidebar.header("Your entry:")
+    st.number_input('Please enter a number',0,20)
+
+#st.sidebar.header(":gray[Your entry:]")
+
+st.sidebar.markdown(''' <p style="color:#f2f1ec",p class="big-font">Your entry:</p>''', unsafe_allow_html=True)
+st.sidebar.markdown(f''' <p style="color:#f2f1ec">Animal type: {type_in} <br>
+                Gender: {gender_in}  <br>
+                Sterilized: {sterilized_in}  <br>
+                Breed: {breed_type_in}  <br>
+                Dewormed + Vac'ed: {vaccinated_dewormed_in}  <br>
+                Fee required?: {fee_bin_in}  <br>
+                Maturity size: {maturitysize_in}  <br>
+                Fur length: {furlength_in}  <br>
+                Health condition: {health_in}  <br>
+                Color pattern: {color_pattern_in}  <br>
+                No. of photos: {photoamt_in}  <br>
+                Age: {age_in}  <br>
+                Description length: {description_char}</p>
+                ''', unsafe_allow_html=True) 
+
+st.sidebar.markdown(f""" :gray[
+                Animal type: {type_in}  
+                Gender: {gender_in}  
+                Sterilized: {sterilized_in}  
+                Breed: {breed_type_in}  
+                Dewormed + Vac'ed: {vaccinated_dewormed_in}  
+                Fee required?: {fee_bin_in}  
+                Maturity size: {maturitysize_in}  
+                Fur length: {furlength_in}  
+                Health condition: {health_in}  
+                Color pattern: {color_pattern_in}  
+                No. of photos: {photoamt_in}  
+                Age: {age_in}  
+                Description length: {description_char}]
+               """)
 
 st.sidebar.markdown(f""" ##### :gray[
                 Animal type: {type_in}  
@@ -156,21 +206,6 @@ st.sidebar.markdown(f""" ##### :gray[
                 No. of photos: {photoamt_in}  
                 Age: {age_in}  
                 Description length: {description_char}]  
-               """)
-st.sidebar.text(f""" 
-                Animal type: {type_in}  
-                Gender: {gender_in}  
-                Sterilized: {sterilized_in}  
-                Breed: {breed_type_in}  
-                Dewormed + Vac'ed: {vaccinated_dewormed_in}  
-                Fee required?: {fee_bin_in}  
-                Maturity size: {maturitysize_in}  
-                Fur length: {furlength_in}  
-                Health condition: {health_in}  
-                Color pattern: {color_pattern_in}  
-                No. of photos: {photoamt_in}  
-                Age: {age_in}  
-                Description length: {description_char} 
                """)
 
 #{type_in}
