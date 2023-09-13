@@ -5,6 +5,7 @@ from PIL import Image
 import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
 import os
 
 # global print settings
@@ -59,26 +60,27 @@ Predicting the Adoption Speed of Shelter Animals
 # import saved model
 # load the model from disk
 loaded_model = pickle.load(open('notebooks/gbc.sav', 'rb'))
+loaded_scaler = pickle.load(open('notebooks/scaler.sav', 'rb'))
 # result = loaded_model.score(X_test, Y_test)
 # print(result)
 
 #st.write('#### Type of Animal')
-type_in = st.radio(label='##### Type of Animal', options=['Cat', 'Dog'])
+type_in = st.radio(label='#### Type of Animal', options=['Cat', 'Dog'])
 type_bin = 0 if type_in == 'Dog' else 1
 
 gender_in = st.radio(label='#### Sex of Animal', options=['Male', 'Female'])
 gender_bin = 0 if gender_in == 'Male' else 1
 
-sterilized_in = st.radio(label='#### Is the Animal sterilized?', options=['Yes', 'No'])
+sterilized_in = st.radio(label='#### Is the Animal sterilized?', options=['No','Yes'])
 sterilized_in_bin = 0 if sterilized_in == 'Yes' else 1
 
 breed_type_in = st.radio(label='#### Is the Animal pure or mixed breed?', options=['Pure', 'Mixed'])
 breed_type_bin = 0 if breed_type_in == 'Pure' else 1
 
-vaccinated_dewormed_in = st.radio(label='#### Is the Animal Dewormed and Vaccinated?', options=['Fully', 'Partly', 'Neither'])
+vaccinated_dewormed_in = st.radio(label='#### Is the Animal Dewormed and Vaccinated?', options=['Neither','Partly','Fully'])
 vaccinated_dewormed_bin = 0 if vaccinated_dewormed_in == 'Fully' else 1 if vaccinated_dewormed_in == 'Partly' else 2
 
-fee_bin_in = st.radio(label='#### Is an Adoption Fee required?', options=['Yes', 'No'])
+fee_bin_in = st.radio(label='#### Is an Adoption Fee required?', options=['No', 'Yes'])
 fee_bin_bin = 0 if fee_bin_in == 'No' else 1
 
 maturitysize_in = st.radio(label='#### Size of Animal at maturity', options=['Small','Medium', 'Large','Extra Large'])
@@ -97,16 +99,16 @@ health_0_bin = 1 if health_in == 'Healthy' else 0
 health_1_bin = 1 if health_in == 'Minor Injury' else 0
 health_2_bin = 1 if health_in == 'Serious Injury' else 0
 
-color_pattern_in = st.radio(label='#### Color Pattern of Animal', options=['Dark', 'Mixed', 'Light'])
+color_pattern_in = st.radio(label='#### Color Pattern of Animal', options=['Dark', 'Light', 'Mixed'])
 color_pattern_0_bin = 1 if color_pattern_in == 'Dark' else 0
 color_pattern_1_bin = 1 if color_pattern_in == 'Light' else 0
 color_pattern_2_bin = 1 if color_pattern_in == 'Mixed' else 0
 
-photoamt_in = st.slider('#### How many Photos of the Animal are uploaded?', 0, 20, 1)
+photoamt_in = st.slider('#### How many Photos of the Animal are uploaded? If more than 15, please enter 15.', 0, 15, 0)
 st.write(photoamt_in, 'photos are uploaded.')
 photoamt_11_bin = photoamt_in if photoamt_in <= 11 else 11
 
-age_in = st.slider('#### How old is the Animal (in months))?', 0, 300, 1)
+age_in = st.slider('#### How old is the Animal (in months))? If older than 100 months, please enter 100.', 0, 100, 0)
 age_bin_bin = 0 if age_in <= 3 else 1 if age_in <= 12 else 2 if age_in <= 72 else 3
 st.write('The Animal is ', age_in, 'months old.')
 # newborn: 0-3 months higher adoption speeds up to this age on average (0)
@@ -150,11 +152,17 @@ if saved:
             'photoamt_11' : [photoamt_11_bin],
             'age_bin' : [age_bin_bin],
             'description_char' : [description_char]}
-    df_new = pd.DataFrame(data=d)
+    
+
+    df = pd.DataFrame(data=d)
+    arr_num_scaled = loaded_scaler.transform(df[['photoamt_11', 'age_bin', 'description_char']]) 
+    df_num_scaled = pd.DataFrame(columns=['photoamt_11', 'age_bin', 'description_char'], data=arr_num_scaled)
+    df_new = pd.concat([df.drop(['photoamt_11', 'age_bin', 'description_char'], axis=1),df_num_scaled], axis=1)
+    
     y_pred = loaded_model.predict(df_new)
     st.write("# Prediction:")
     prediction_string_list = ["The predicted adoption time is < 1 week","The predicted adoption time is between 1 week and 1 month","The predicted adoption time is between 1 and 3 month","The animal will likely not be adopted within 100 days"]
-    st.write(f'{prediction_string_list[int(y_pred)]}')
+    st.write(f'{prediction_string_list[int(y_pred)-1]}')
     #st.write('The predicted Adoption Speed is ', y_pred, '.')
     #st.write(f'The Distribution of Adoption Speeds for {type_in}s')
     fig = plt.figure(figsize=(20,8))
