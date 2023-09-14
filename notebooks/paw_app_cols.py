@@ -309,7 +309,7 @@ plot_button_2 = st.button(f'Plot Distribution of Adoption Speeds for {feat_choic
 
 if plot_button_2:
     fig = plt.figure(figsize=(20,8))
-    speed_plot = sns.histplot(
+    speed_plot_2 = sns.histplot(
     data=df_comb.query('feat_choice==@dict_feat[feat_choice]'), 
     x='adoptionspeed', stat='proportion', discrete=True,
 #    y = 'accuracy',
@@ -318,9 +318,9 @@ if plot_button_2:
     )
     plt.xlabel('Adoptionspeed')
     #plt.ylabel('Accuracy')
-    plt.title(f'The Distribution of Adoption Speeds for {type_in}s')#, fontsize=24)
+    plt.title(f'The Distribution of Adoption Speeds for {feat_choice}')#, fontsize=24)
     for g in speed_plot.patches:
-        speed_plot.annotate(format(g.get_height(), '.2f'),
+        speed_plot_2.annotate(format(g.get_height(), '.2f'),
                     (g.get_x() + g.get_width() / 2., g.get_height()),
                     ha = 'center', va = 'center',
                     xytext = (0, -20),
@@ -328,7 +328,7 @@ if plot_button_2:
                     color = '#f2f1ec')
     plt.xticks(ticks=np.linspace(1,4,4))
     plt.xlim([0.5, 4.5])
-    speed_plot.set_xticklabels(['First Week','First Month','First Three Month','Not Adopted after 100 Days'])
+    speed_plot_2.set_xticklabels(['First Week','First Month','First Three Month','Not Adopted after 100 Days'])
     # Display the plot in Streamlit
-    st.pyplot(speed_plot.get_figure())
+    st.pyplot(speed_plot_2.get_figure())
     #plt.show();
