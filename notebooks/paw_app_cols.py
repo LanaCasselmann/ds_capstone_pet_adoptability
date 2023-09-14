@@ -49,7 +49,10 @@ sns.set_theme(style="white", palette=colors, rc=custom_params)
 
 
 #share preview settings
-st.set_page_config(page_title="Paw Predictors", page_icon=Image.open('./notebooks/cat_dog_pair.png'))
+#st.set_page_config(page_title="Paw Predictors", page_icon=Image.open('./notebooks/cat_dog_pair.png'))
+#st.set_page_config(page_title="Paw Predictors", page_icon=':dog:')
+st.set_page_config(layout = "wide", page_title="Paw Predictors", page_icon=Image.open('./notebooks/cat_dog_pair.png'))
+
 
 # define big font
 st.markdown("""
@@ -68,7 +71,7 @@ st.sidebar.image(ppp)
 
 st.write("""
 # Paw Predictors
-Predicting the Adoption Speed of Shelter Animals
+### Predicting the Adoption Speed of Shelter Animals
 """)
 
 # df = pd.read_csv("my_data.csv")
@@ -88,7 +91,7 @@ st.markdown("""
                     padding-top: 1rem;
                     padding-bottom: 1rem;
                     padding-left: 1.5rem; 
-                    padding-right: 1rem;
+                    padding-right: 1.5rem;
                 }
         </style>
         """, unsafe_allow_html=True)
@@ -176,37 +179,21 @@ st.sidebar.markdown(f''' <p style="color:#f2f1ec">Animal type: {type_in} <br>
                 Description length: {description_char}</p>
                 ''', unsafe_allow_html=True) 
 
-st.sidebar.markdown(f""" :gray[
-                Animal type: {type_in}  
-                Gender: {gender_in}  
-                Sterilized: {sterilized_in}  
-                Breed: {breed_type_in}  
-                Dewormed + Vac'ed: {vaccinated_dewormed_in}  
-                Fee required?: {fee_bin_in}  
-                Maturity size: {maturitysize_in}  
-                Fur length: {furlength_in}  
-                Health condition: {health_in}  
-                Color pattern: {color_pattern_in}  
-                No. of photos: {photoamt_in}  
-                Age: {age_in}  
-                Description length: {description_char}]
-               """)
-
-st.sidebar.markdown(f""" ##### :gray[
-                Animal type: {type_in}  
-                Gender: {gender_in}  
-                Sterilized: {sterilized_in}  
-                Breed: {breed_type_in}  
-                Dewormed + Vac'ed: {vaccinated_dewormed_in}  
-                Fee required?: {fee_bin_in}  
-                Maturity size: {maturitysize_in}  
-                Fur length: {furlength_in}  
-                Health condition: {health_in}  
-                Color pattern: {color_pattern_in}  
-                No. of photos: {photoamt_in}  
-                Age: {age_in}  
-                Description length: {description_char}]  
-               """)
+# st.sidebar.markdown(f""" ##### :gray[
+#                 Animal type: {type_in}  
+#                 Gender: {gender_in}  
+#                 Sterilized: {sterilized_in}  
+#                 Breed: {breed_type_in}  
+#                 Dewormed + Vac'ed: {vaccinated_dewormed_in}  
+#                 Fee required?: {fee_bin_in}  
+#                 Maturity size: {maturitysize_in}  
+#                 Fur length: {furlength_in}  
+#                 Health condition: {health_in}  
+#                 Color pattern: {color_pattern_in}  
+#                 No. of photos: {photoamt_in}  
+#                 Age: {age_in}  
+#                 Description length: {description_char}]  
+#                """)
 
 #{type_in}
 #{health_in}
@@ -253,7 +240,7 @@ if saved:
     y_pred = loaded_model.predict(df_new)
     st.write("# Prediction:")
     prediction_string_list = ["The predicted adoption time is < 1 week","The predicted adoption time is between 1 week and 1 month","The predicted adoption time is between 1 and 3 month","The animal will likely not be adopted within 100 days"]
-    st.write(f'{prediction_string_list[int(y_pred)-1]}')
+    st.write(f'#### {prediction_string_list[int(y_pred)-1]}')
     #st.write('The predicted Adoption Speed is ', y_pred, '.')
     #st.write(f'The Distribution of Adoption Speeds for {type_in}s')
     fig = plt.figure(figsize=(20,8))
