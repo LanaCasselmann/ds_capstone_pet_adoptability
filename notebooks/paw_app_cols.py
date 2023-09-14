@@ -1,17 +1,23 @@
+# import of the necessary libraries
+# dataframe and math libraries
+import pandas as pd
+import numpy as np
+# streamlit for building a streamlit web app
 import streamlit as st
 import streamlit.components.v1 as components
-import pandas as pd
-import pickle
 from PIL import Image
+# serialization of model and scaler
+import pickle
+# plotting
 import seaborn as sns
-import numpy as np
 import matplotlib.pyplot as plt
+# not needed?
 from sklearn.metrics import confusion_matrix
 import os
 
 
 
-# global print settings
+# global plot settings
 # set seaborn options globally
 colors = ['#365b6d', '#41c1ba', '#289dd2', '#6c9286', '#f2f1ec', '#fa9939']
 custom_palette = sns.set_palette(sns.color_palette(colors))
@@ -49,7 +55,7 @@ custom_params = {"axes.facecolor": "#f2f1ec",
 sns.set_theme(style="white", palette=colors, rc=custom_params)
 
 
-#share preview settings
+#share and preview settings
 #st.set_page_config(page_title="Paw Predictors", page_icon=Image.open('./notebooks/cat_dog_pair.png'))
 #st.set_page_config(page_title="Paw Predictors", page_icon=':dog:')
 st.set_page_config(layout = "wide", page_title="Paw Predictors", page_icon=Image.open('./notebooks/cat_dog_pair.png'))
@@ -62,27 +68,6 @@ st.markdown("""
 }
 </style>
 """, unsafe_allow_html=True)
-#st.write(os.getcwd())
-#ppp = Image.open('./notebooks/ppp_cropped.png')
-ppp = Image.open('./notebooks/cat_dog_pair.png')
-st.sidebar.image(ppp)
-
-
-
-st.write("""
-# Paw Predictors
-### Predicting the Adoption Speed of Shelter Animals
-""")
-
-# df = pd.read_csv("my_data.csv")
-# st.line_chart(df)
-
-# import saved model
-# load the model from disk
-loaded_model = pickle.load(open('notebooks/gbc.sav', 'rb'))
-loaded_scaler = pickle.load(open('notebooks/scaler.sav', 'rb'))
-# result = loaded_model.score(X_test, Y_test)
-# print(result)
 
 # reduce/set whitespace on top/sides/bottom # left=left of sidebar
 st.markdown("""
@@ -96,6 +81,33 @@ st.markdown("""
         </style>
         """, unsafe_allow_html=True)
 
+
+# df = pd.read_csv("my_data.csv")
+# st.line_chart(df)
+
+# import saved serialized model and scaler
+loaded_model = pickle.load(open('notebooks/gbc.sav', 'rb'))
+loaded_scaler = pickle.load(open('notebooks/scaler.sav', 'rb'))
+# result = loaded_model.score(X_test, Y_test)
+# print(result)
+
+#########################################
+
+# setting the headers 
+
+#st.write(os.getcwd())
+#ppp = Image.open('./notebooks/ppp_cropped.png')
+ppp = Image.open('./notebooks/cat_dog_pair.png')
+st.sidebar.image(ppp)
+
+st.write("""
+# Paw Predictors
+### Predicting the Adoption Speed of Shelter Animals
+""")
+
+# main page with three columns
+# in each column: getting user input on pet features
+# input data is changed according to feature engineering requirements in order to feed them into the model
 col1, col2, col3 = st.columns(3)
 with col1: 
     type_in = st.radio(label='##### Type of Animal', options=['Cat', 'Dog'])
@@ -114,7 +126,6 @@ with col1:
     vaccinated_dewormed_bin = 0 if vaccinated_dewormed_in == 'Fully' else 1 if vaccinated_dewormed_in == 'Partly' else 2
 
 with col2:
-
 
     fee_bin_in = st.radio(label='##### Is an Adoption Fee required?', options=['No', 'Yes'])
     fee_bin_bin = 0 if fee_bin_in == 'No' else 1
@@ -136,8 +147,6 @@ with col2:
     health_2_bin = 1 if health_in == 'Serious Injury' else 0
 
     #saved = st.button('Predict',type="primary",use_container_width=True)
-
-
 
 with col3:
     color_pattern_in = st.radio(label='##### Color Pattern of Animal', options=['Dark', 'Light', 'Mixed'])
@@ -212,11 +221,11 @@ st.sidebar.markdown(f''' <p style="color:#f2f1ec">Animal type: {type_in} <br>
 #                 Description length: {description_char}]  
 #                """)
 
-#{type_in}
-#{health_in}
 # save input data
 #saved = st.button('Predict')
 
+
+# import data for plotting
 X_train_comb = pd.read_csv('data/petfinder-adoption-prediction/train/X_train_minmax_scaled_processed.csv')
 y_train_comb = pd.read_csv('data/petfinder-adoption-prediction/train/y_train.csv')
 
@@ -249,7 +258,6 @@ if saved:
             'age_bin' : [age_bin_bin],
             'description_char' : [description_char]}
     
-
     df = pd.DataFrame(data=d)
     arr_num_scaled = loaded_scaler.transform(df[['photoamt_11', 'age_bin', 'description_char']]) 
     df_num_scaled = pd.DataFrame(columns=['photoamt_11', 'age_bin', 'description_char'], data=arr_num_scaled)
@@ -290,27 +298,64 @@ if plot_button:
     st.pyplot(speed_plot.get_figure())
     #plt.show();
 
-dict_feat = {'Animal type': type_in,
-            'Gender': gender_in ,
-            'Sterilized': sterilized_in,
-            'Breed': breed_type_in,
-            "Dewormed + Vac'ed": vaccinated_dewormed_in,
-            'Fee required?': fee_bin_in,
-            'Maturity size': maturitysize_in,
-            'Fur length': furlength_in,
-            'Health condition': health_in,
-            'Color pattern': color_pattern_in,
-            'No. of photos': photoamt_in,
-            'Age': age_in,
+dict_sing_feat = {'Animal type': type_bin,
+            'Gender': gender_bin ,
+            'Sterilized': sterilized_in_bin,
+            'Breed': breed_type_bin,
+#            "Dewormed + Vac'ed": vaccinated_dewormed_in,
+            'Fee required?': fee_bin_bin,
+#            'Maturity size': maturitysize_in,
+#            'Fur length': furlength_in,
+#            'Health condition': health_in,
+#            'Color pattern': color_pattern_in,
+            'No. of photos': photoamt_11_bin,
+            'Age': age_bin_bin,
             'Description length': description_char
 }
-feat_choice = st.radio(label='##### Pick a feature to look at its Adoption Speed Distribution', options=list(dict_feat.keys()))
+
+# 'vaccinated_dewormed',
+# 'maturitysize_0',
+# 'maturitysize_1',
+# 'maturitysize_2',
+# 'maturitysize_3',
+# 'furlength_0',
+# 'furlength_1',
+# 'furlength_2',
+# 'health_0',
+# 'health_1',
+# 'health_2',
+# 'color_pattern_0',
+# 'color_pattern_1',
+# 'color_pattern_2',
+            
+
+feat_choice = st.radio(label='##### Pick a feature to look at its Adoption Speed Distribution', options=list(dict_sing_feat.keys()))
 plot_button_2 = st.button(f'Plot Distribution of Adoption Speeds for {feat_choice}')
+if feat_choice == 'Animal type':
+    col_feat_choice = 'type'  
+elif feat_choice == 'Gender':
+    col_feat_choice = 'gender'
+elif feat_choice == 'Sterilized':
+    col_feat_choice = 'sterilized'
+elif feat_choice == 'Breed':
+    col_feat_choice = 'breed_type'
+elif feat_choice == 'Fee required?':
+    col_feat_choice = 'fee_bin'
+elif feat_choice == 'No. of photos':
+    col_feat_choice = 'photoamt_11'
+elif feat_choice == 'Age':
+    col_feat_choice = 'age_bin'
+elif feat_choice == 'Description length': 
+    col_feat_choice = 'description_char'
+
+
+feat_choice_value = dict_sing_feat[feat_choice]
+query_str = f'{col_feat_choice}=={feat_choice_value}'
 
 if plot_button_2:
     fig = plt.figure(figsize=(20,8))
     speed_plot_2 = sns.histplot(
-    data=df_comb.query('@feat_choice==@dict_feat[@feat_choice]'), 
+    data=df_comb.query(query_str), 
     x='adoptionspeed', stat='proportion', discrete=True,
 #    y = 'accuracy',
     color='#41c1ba',
@@ -318,8 +363,8 @@ if plot_button_2:
     )
     plt.xlabel('Adoptionspeed')
     #plt.ylabel('Accuracy')
-    plt.title(f'The Distribution of Adoption Speeds for {feat_choice}')#, fontsize=24)
-    for g in speed_plot.patches:
+    plt.title(f'The Distribution of Adoption Speeds for your choice of {feat_choice}')#, fontsize=24)
+    for g in speed_plot_2.patches:
         speed_plot_2.annotate(format(g.get_height(), '.2f'),
                     (g.get_x() + g.get_width() / 2., g.get_height()),
                     ha = 'center', va = 'center',
