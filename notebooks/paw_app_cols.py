@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 import pickle
 from PIL import Image
@@ -52,7 +53,6 @@ sns.set_theme(style="white", palette=colors, rc=custom_params)
 #st.set_page_config(page_title="Paw Predictors", page_icon=Image.open('./notebooks/cat_dog_pair.png'))
 #st.set_page_config(page_title="Paw Predictors", page_icon=':dog:')
 st.set_page_config(layout = "wide", page_title="Paw Predictors", page_icon=Image.open('./notebooks/cat_dog_pair.png'))
-
 
 # define big font
 st.markdown("""
@@ -159,7 +159,20 @@ with col3:
     #st.text_input.markdown(""" :gray[Please enter your description text]""", 'Animal Description')
     description_char = len(description_in)
 
-    st.number_input('Please enter a number',0,20)
+    #st.number_input('Please enter a number',0,20)
+    #define background of text_input box
+    components.html(
+        """
+    <script>
+    const elements = window.parent.document.querySelectorAll('.stTextInput div[data-baseweb="input"] > div')
+    console.log(elements)
+    elements[0].style.backgroundColor = '#f2f1ec'
+    </script>
+    """,
+        height=0,
+        width=0,
+    )
+    # '#f2f1ec'
 
 #st.sidebar.header(":gray[Your entry:]")
 
@@ -243,6 +256,9 @@ if saved:
     st.write(f'#### {prediction_string_list[int(y_pred)-1]}')
     #st.write('The predicted Adoption Speed is ', y_pred, '.')
     #st.write(f'The Distribution of Adoption Speeds for {type_in}s')
+
+plot_button = st.button('Plot Distribution of Adoption Speeds')
+if plot_button:
     fig = plt.figure(figsize=(20,8))
     speed_plot = sns.histplot(
     data=df_comb.query('type==@type_bin'), 
