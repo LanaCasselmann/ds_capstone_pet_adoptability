@@ -302,7 +302,7 @@ dict_sing_feat = {'Animal type': type_bin,
             'Gender': gender_bin ,
             'Sterilized': sterilized_in_bin,
             'Breed': breed_type_bin,
-#            "Dewormed + Vac'ed": vaccinated_dewormed_in,
+            "Dewormed + Vac'ed": vaccinated_dewormed_bin,
             'Fee required?': fee_bin_bin,
 #            'Maturity size': maturitysize_in,
 #            'Fur length': furlength_in,
@@ -313,7 +313,6 @@ dict_sing_feat = {'Animal type': type_bin,
             'Description length': description_char
 }
 
-# 'vaccinated_dewormed',
 # 'maturitysize_0',
 # 'maturitysize_1',
 # 'maturitysize_2',
@@ -339,6 +338,8 @@ elif feat_choice == 'Sterilized':
     col_feat_choice = 'sterilized'
 elif feat_choice == 'Breed':
     col_feat_choice = 'breed_type'
+elif feat_choice == "Dewormed + Vac'ed":
+    col_feat_choice = 'vaccinated_dewormed'
 elif feat_choice == 'Fee required?':
     col_feat_choice = 'fee_bin'
 elif feat_choice == 'No. of photos':
