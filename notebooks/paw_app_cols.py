@@ -135,6 +135,8 @@ with col2:
     health_1_bin = 1 if health_in == 'Minor Injury' else 0
     health_2_bin = 1 if health_in == 'Serious Injury' else 0
 
+    #saved = st.button('Predict',type="primary",use_container_width=True)
+
 
 
 with col3:
@@ -155,7 +157,7 @@ with col3:
     # adult 13-72 month (2)
     # senior: >= 73 (3)
 
-    description_in = st.text_input('##### Please enter your description text', 'Animal Description')
+    description_in = st.text_input('##### Please enter your description text', '')
     #st.text_input.markdown(""" :gray[Please enter your description text]""", 'Animal Description')
     description_char = len(description_in)
 
@@ -211,7 +213,7 @@ st.sidebar.markdown(f''' <p style="color:#f2f1ec">Animal type: {type_in} <br>
 #{type_in}
 #{health_in}
 # save input data
-saved = st.button('Predict')
+#saved = st.button('Predict')
 
 X_train_comb = pd.read_csv('data/petfinder-adoption-prediction/train/X_train_minmax_scaled_processed.csv')
 y_train_comb = pd.read_csv('data/petfinder-adoption-prediction/train/y_train.csv')
@@ -219,6 +221,7 @@ y_train_comb = pd.read_csv('data/petfinder-adoption-prediction/train/y_train.csv
 df_comb = X_train_comb.copy()
 df_comb['adoptionspeed']=y_train_comb
 
+saved = st.button('Predict',type="primary",use_container_width=True)
 if saved:
     # save values in dataframe
     d =     {'type' : [type_bin],
@@ -258,6 +261,7 @@ if saved:
     #st.write(f'The Distribution of Adoption Speeds for {type_in}s')
 
 plot_button = st.button('Plot Distribution of Adoption Speeds')
+
 if plot_button:
     fig = plt.figure(figsize=(20,8))
     speed_plot = sns.histplot(
