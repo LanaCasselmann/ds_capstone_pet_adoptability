@@ -310,7 +310,7 @@ plot_button_2 = st.button(f'Plot Distribution of Adoption Speeds for {feat_choic
 if plot_button_2:
     fig = plt.figure(figsize=(20,8))
     speed_plot_2 = sns.histplot(
-    data=df_comb.query('feat_choice==@dict_feat[feat_choice]'), 
+    data=df_comb.query('@feat_choice==@dict_feat[@feat_choice]'), 
     x='adoptionspeed', stat='proportion', discrete=True,
 #    y = 'accuracy',
     color='#41c1ba',
