@@ -289,3 +289,46 @@ if plot_button:
     # Display the plot in Streamlit
     st.pyplot(speed_plot.get_figure())
     #plt.show();
+
+dict_feat = {'Animal type': type_in,
+            'Gender': gender_in ,
+            'Sterilized': sterilized_in,
+            'Breed': breed_type_in,
+            "Dewormed + Vac'ed": vaccinated_dewormed_in,
+            'Fee required?': fee_bin_in,
+            'Maturity size': maturitysize_in,
+            'Fur length': furlength_in,
+            'Health condition': health_in,
+            'Color pattern': color_pattern_in,
+            'No. of photos': photoamt_in,
+            'Age': age_in,
+            'Description length': description_char
+}
+feat_choice = st.radio(label='##### Pick a feature to look at its Adoption Speed Distribution', options=list(dict_feat.keys()))
+plot_button_2 = st.button(f'Plot Distribution of Adoption Speeds for {feat_choice}')
+
+if plot_button_2:
+    fig = plt.figure(figsize=(20,8))
+    speed_plot = sns.histplot(
+    data=df_comb.query('feat_choice==@dict_feat[feat_choice]'), 
+    x='adoptionspeed', stat='proportion', discrete=True,
+#    y = 'accuracy',
+    color='#41c1ba',
+    shrink=.8
+    )
+    plt.xlabel('Adoptionspeed')
+    #plt.ylabel('Accuracy')
+    plt.title(f'The Distribution of Adoption Speeds for {type_in}s')#, fontsize=24)
+    for g in speed_plot.patches:
+        speed_plot.annotate(format(g.get_height(), '.2f'),
+                    (g.get_x() + g.get_width() / 2., g.get_height()),
+                    ha = 'center', va = 'center',
+                    xytext = (0, -20),
+                    textcoords = 'offset points',
+                    color = '#f2f1ec')
+    plt.xticks(ticks=np.linspace(1,4,4))
+    plt.xlim([0.5, 4.5])
+    speed_plot.set_xticklabels(['First Week','First Month','First Three Month','Not Adopted after 100 Days'])
+    # Display the plot in Streamlit
+    st.pyplot(speed_plot.get_figure())
+    #plt.show();
