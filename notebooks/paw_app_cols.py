@@ -145,11 +145,13 @@ with col3:
     color_pattern_1_bin = 1 if color_pattern_in == 'Light' else 0
     color_pattern_2_bin = 1 if color_pattern_in == 'Mixed' else 0
 
-    photoamt_in = st.slider('##### How many Photos of the Animal are uploaded? If more than 15, please enter 15.', 0, 15, 0)
+#    photoamt_in = st.slider('##### How many Photos of the Animal are uploaded? If more than 15, please enter 15.', 0, 15, 0)
+    photoamt_in = st.slider('##### How many Photos of the Animal are uploaded?', 0, 15, 0)
     #st.write(photoamt_in, 'photos are uploaded.')
     photoamt_11_bin = photoamt_in if photoamt_in <= 11 else 11
 
-    age_in = st.slider('##### How old is the Animal (in months))? If older than 100 months, please enter 100.', 0, 100, 0)
+#    age_in = st.slider('##### How old is the Animal (in months))? If older than 100 months, please enter 100.', 0, 100, 0)
+    age_in = st.slider('##### How old is the Animal (in months))?', 0, 100, 0)
     age_bin_bin = 0 if age_in <= 3 else 1 if age_in <= 12 else 2 if age_in <= 72 else 3
     #st.write('The Animal is ', age_in, 'months old.')
     # newborn: 0-3 months higher adoption speeds up to this age on average (0)
@@ -260,7 +262,7 @@ if saved:
     #st.write('The predicted Adoption Speed is ', y_pred, '.')
     #st.write(f'The Distribution of Adoption Speeds for {type_in}s')
 
-plot_button = st.button('Plot Distribution of Adoption Speeds')
+plot_button = st.button(f'Plot Distribution of Adoption Speeds for {type_in}s')
 
 if plot_button:
     fig = plt.figure(figsize=(20,8))
