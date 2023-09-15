@@ -75,8 +75,8 @@ st.markdown("""
                .block-container {
                     padding-top: 1rem;
                     padding-bottom: 1rem;
-                    padding-left: 1.5rem; 
-                    padding-right: 1.5rem;
+                    padding-left: 2.5rem; 
+                    padding-right: 2rem;
                 }
         </style>
         """, unsafe_allow_html=True)
@@ -160,7 +160,7 @@ with col3:
     photoamt_11_bin = photoamt_in if photoamt_in <= 11 else 11
 
 #    age_in = st.slider('##### How old is the Animal (in months))? If older than 100 months, please enter 100.', 0, 100, 0)
-    age_in = st.slider('##### How old is the Animal (in months))?', 0, 100, 0)
+    age_in = st.slider('##### How old is the Animal (in months)?', 0, 100, 0)
     age_bin_bin = 0 if age_in <= 3 else 1 if age_in <= 12 else 2 if age_in <= 72 else 3
     #st.write('The Animal is ', age_in, 'months old.')
     # newborn: 0-3 months higher adoption speeds up to this age on average (0)
