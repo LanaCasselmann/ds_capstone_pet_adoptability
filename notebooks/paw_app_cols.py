@@ -91,7 +91,7 @@ loaded_scaler = pickle.load(open('notebooks/scaler.sav', 'rb'))
 # result = loaded_model.score(X_test, Y_test)
 # print(result)
 
-#########################################
+# -------------------------------------
 
 # setting the headers 
 
@@ -102,7 +102,9 @@ st.sidebar.image(ppp)
 
 st.write("""
 # Paw Predictors
-### Predicting the Adoption Speed of Shelter Animals
+### Predicting the Adoption Speed of Shelter Animals 
+---
+         
 """)
 
 # main page with three columns
@@ -270,6 +272,11 @@ if saved:
     #st.write('The predicted Adoption Speed is ', y_pred, '.')
     #st.write(f'The Distribution of Adoption Speeds for {type_in}s')
 
+st.write("""
+---
+         
+### Plot Options
+""")
 plot_button = st.button(f'Plot Distribution of Adoption Speeds for {type_in}s')
 
 if plot_button:
