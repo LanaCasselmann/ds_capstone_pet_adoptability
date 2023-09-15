@@ -102,9 +102,7 @@ st.sidebar.image(ppp)
 
 st.write("""
 # Paw Predictors
-### Predicting the Adoption Speed of Shelter Animals 
----
-         
+### Predicting the Adoption Speed of Shelter Animals     
 """)
 
 # main page with three columns
