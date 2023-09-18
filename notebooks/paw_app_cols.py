@@ -186,7 +186,20 @@ with col3:
         width=0,
     )
     # '#f2f1ec'
-
+dict_input_feat = {'Animal type': type_in,
+            'Gender': gender_in ,
+            'Sterilized': sterilized_in,
+            'Breed': breed_type_in,
+            "Dewormed + Vac'ed": vaccinated_dewormed_in,
+            'Fee required?': fee_bin_in,
+            'Maturity size': maturitysize_in,
+            'Fur length': furlength_in,
+            'Health condition': health_in,
+            'Color pattern': color_pattern_in,
+            'No. of photos': photoamt_in,
+            'Age': age_in,
+            'Description length': description_char
+}
 #st.sidebar.header(":gray[Your entry:]")
 
 st.sidebar.markdown(''' <p style="color:#f2f1ec",p class="big-font">Your entry:</p>''', unsafe_allow_html=True)
@@ -232,37 +245,38 @@ y_train_comb = pd.read_csv('data/petfinder-adoption-prediction/train/y_train.csv
 df_comb = X_train_comb.copy()
 df_comb['adoptionspeed']=y_train_comb
 
+ # save values in dataframe
+d =     {'type' : [type_bin],
+        'gender' : [gender_bin],
+        'sterilized' : [sterilized_in_bin],
+        'breed_type' : [breed_type_bin],
+        'vaccinated_dewormed' : [vaccinated_dewormed_bin],
+        'fee_bin' : [fee_bin_bin],
+        'maturitysize_0' : [maturitysize_0_bin],
+        'maturitysize_1' : [maturitysize_1_bin],
+        'maturitysize_2' : [maturitysize_2_bin],
+        'maturitysize_3' : [maturitysize_3_bin],
+        'furlength_0' : [furlength_0_bin],
+        'furlength_1' : [furlength_1_bin],
+        'furlength_2' : [furlength_2_bin],
+        'health_0' : [health_0_bin],
+        'health_1' : [health_1_bin],
+        'health_2' : [health_2_bin],
+        'color_pattern_0' : [color_pattern_0_bin],
+        'color_pattern_1' : [color_pattern_1_bin],
+        'color_pattern_2' : [color_pattern_2_bin],
+        'photoamt_11' : [photoamt_11_bin],
+        'age_bin' : [age_bin_bin],
+        'description_char' : [description_char]}
+
+df = pd.DataFrame(data=d)
+arr_num_scaled = loaded_scaler.transform(df[['photoamt_11', 'age_bin', 'description_char']]) 
+df_num_scaled = pd.DataFrame(columns=['photoamt_11', 'age_bin', 'description_char'], data=arr_num_scaled)
+# scaled user input
+df_new = pd.concat([df.drop(['photoamt_11', 'age_bin', 'description_char'], axis=1),df_num_scaled], axis=1)
+
 saved = st.button('Predict',type="primary",use_container_width=True)
 if saved:
-    # save values in dataframe
-    d =     {'type' : [type_bin],
-            'gender' : [gender_bin],
-            'sterilized' : [sterilized_in_bin],
-            'breed_type' : [breed_type_bin],
-            'vaccinated_dewormed' : [vaccinated_dewormed_bin],
-            'fee_bin' : [fee_bin_bin],
-            'maturitysize_0' : [maturitysize_0_bin],
-            'maturitysize_1' : [maturitysize_1_bin],
-            'maturitysize_2' : [maturitysize_2_bin],
-            'maturitysize_3' : [maturitysize_3_bin],
-            'furlength_0' : [furlength_0_bin],
-            'furlength_1' : [furlength_1_bin],
-            'furlength_2' : [furlength_2_bin],
-            'health_0' : [health_0_bin],
-            'health_1' : [health_1_bin],
-            'health_2' : [health_2_bin],
-            'color_pattern_0' : [color_pattern_0_bin],
-            'color_pattern_1' : [color_pattern_1_bin],
-            'color_pattern_2' : [color_pattern_2_bin],
-            'photoamt_11' : [photoamt_11_bin],
-            'age_bin' : [age_bin_bin],
-            'description_char' : [description_char]}
-    
-    df = pd.DataFrame(data=d)
-    arr_num_scaled = loaded_scaler.transform(df[['photoamt_11', 'age_bin', 'description_char']]) 
-    df_num_scaled = pd.DataFrame(columns=['photoamt_11', 'age_bin', 'description_char'], data=arr_num_scaled)
-    df_new = pd.concat([df.drop(['photoamt_11', 'age_bin', 'description_char'], axis=1),df_num_scaled], axis=1)
-    
     y_pred = loaded_model.predict(df_new)
     st.write("# Prediction:")
     prediction_string_list = ["The predicted adoption time is < 1 week","The predicted adoption time is between 1 week and 1 month","The predicted adoption time is between 1 and 3 month","The animal will likely not be adopted within 100 days"]
@@ -275,33 +289,33 @@ st.write("""
          
 ### Plot Options
 """)
-plot_button = st.button(f'Plot Distribution of Adoption Speeds for {type_in}s')
+# plot_button = st.button(f'Plot Distribution of Adoption Speeds for {type_in}s')
 
-if plot_button:
-    fig = plt.figure(figsize=(20,8))
-    speed_plot = sns.histplot(
-    data=df_comb.query('type==@type_bin'), 
-    x='adoptionspeed', stat='proportion', discrete=True,
-#    y = 'accuracy',
-    color='#41c1ba',
-    shrink=.8
-    )
-    plt.xlabel('Adoptionspeed')
-    #plt.ylabel('Accuracy')
-    plt.title(f'The Distribution of Adoption Speeds for {type_in}s')#, fontsize=24)
-    for g in speed_plot.patches:
-        speed_plot.annotate(format(g.get_height(), '.2f'),
-                    (g.get_x() + g.get_width() / 2., g.get_height()),
-                    ha = 'center', va = 'center',
-                    xytext = (0, -20),
-                    textcoords = 'offset points',
-                    color = '#f2f1ec')
-    plt.xticks(ticks=np.linspace(1,4,4))
-    plt.xlim([0.5, 4.5])
-    speed_plot.set_xticklabels(['First Week','First Month','First Three Month','Not Adopted after 100 Days'])
-    # Display the plot in Streamlit
-    st.pyplot(speed_plot.get_figure())
-    #plt.show();
+# if plot_button:
+#     fig = plt.figure(figsize=(20,8))
+#     speed_plot = sns.histplot(
+#     data=df_comb.query('type==@type_bin'), 
+#     x='adoptionspeed', stat='proportion', discrete=True,
+# #    y = 'accuracy',
+#     color='#41c1ba',
+#     shrink=.8
+#     )
+#     plt.xlabel('Adoptionspeed')
+#     #plt.ylabel('Accuracy')
+#     plt.title(f'The Distribution of Adoption Speeds for {type_in}s')#, fontsize=24)
+#     for g in speed_plot.patches:
+#         speed_plot.annotate(format(g.get_height(), '.2f'),
+#                     (g.get_x() + g.get_width() / 2., g.get_height()),
+#                     ha = 'center', va = 'center',
+#                     xytext = (0, -20),
+#                     textcoords = 'offset points',
+#                     color = '#f2f1ec')
+#     plt.xticks(ticks=np.linspace(1,4,4))
+#     plt.xlim([0.5, 4.5])
+#     speed_plot.set_xticklabels(['First Week','First Month','First Three Month','Not Adopted after 100 Days'])
+#     # Display the plot in Streamlit
+#     st.pyplot(speed_plot.get_figure())
+#     #plt.show();
 
 dict_sing_feat = {'Animal type': type_bin,
             'Gender': gender_bin ,
@@ -309,54 +323,60 @@ dict_sing_feat = {'Animal type': type_bin,
             'Breed': breed_type_bin,
             "Dewormed + Vac'ed": vaccinated_dewormed_bin,
             'Fee required?': fee_bin_bin,
-#            'Maturity size': maturitysize_in,
-#            'Fur length': furlength_in,
-#            'Health condition': health_in,
-#            'Color pattern': color_pattern_in,
             'No. of photos': photoamt_11_bin,
             'Age': age_bin_bin,
-            'Description length': description_char
+#            'Description length': description_char
 }
 
-# 'maturitysize_0',
-# 'maturitysize_1',
-# 'maturitysize_2',
-# 'maturitysize_3',
-# 'furlength_0',
-# 'furlength_1',
-# 'furlength_2',
-# 'health_0',
-# 'health_1',
-# 'health_2',
-# 'color_pattern_0',
-# 'color_pattern_1',
-# 'color_pattern_2',
-            
+dict_dummy_feat = {'Maturity size': [maturitysize_0_bin,maturitysize_1_bin,maturitysize_2_bin,maturitysize_3_bin],
+            'Fur length': [furlength_0_bin,furlength_1_bin,furlength_2_bin],
+            'Health condition': [health_0_bin,health_1_bin,health_2_bin],
+            'Color pattern': [color_pattern_0_bin,color_pattern_1_bin,color_pattern_2_bin]
+}
 
-feat_choice = st.radio(label='##### Pick a feature to look at its Adoption Speed Distribution', options=list(dict_sing_feat.keys()))
+feat_choice = st.radio(label='##### Pick a feature to look at its Adoption Speed Distribution', options=list(dict_sing_feat.keys())+ list(dict_dummy_feat.keys()))
 plot_button_2 = st.button(f'Plot Distribution of Adoption Speeds for {feat_choice}')
-if feat_choice == 'Animal type':
-    col_feat_choice = 'type'  
-elif feat_choice == 'Gender':
-    col_feat_choice = 'gender'
-elif feat_choice == 'Sterilized':
-    col_feat_choice = 'sterilized'
-elif feat_choice == 'Breed':
-    col_feat_choice = 'breed_type'
-elif feat_choice == "Dewormed + Vac'ed":
-    col_feat_choice = 'vaccinated_dewormed'
-elif feat_choice == 'Fee required?':
-    col_feat_choice = 'fee_bin'
-elif feat_choice == 'No. of photos':
+if feat_choice in list(dict_sing_feat.keys()) and feat_choice not in ['No. of photos','Age','Description length']:
+    if feat_choice == 'Animal type':
+        col_feat_choice = 'type'  
+    elif feat_choice == 'Gender':
+        col_feat_choice = 'gender'
+    elif feat_choice == 'Sterilized':
+        col_feat_choice = 'sterilized'
+    elif feat_choice == 'Breed':
+        col_feat_choice = 'breed_type'
+    elif feat_choice == "Dewormed + Vac'ed":
+        col_feat_choice = 'vaccinated_dewormed'
+    elif feat_choice == 'Fee required?':
+        col_feat_choice = 'fee_bin'
+    feat_choice_value = dict_sing_feat[feat_choice]
+    query_str = f'{col_feat_choice}=={feat_choice_value}'
+
+if feat_choice == 'No. of photos':
     col_feat_choice = 'photoamt_11'
-elif feat_choice == 'Age':
+    feat_choice_value = df_new[col_feat_choice][0]
+    query_str = f'{col_feat_choice}=={feat_choice_value}'
+
+if feat_choice == 'Age':
     col_feat_choice = 'age_bin'
-elif feat_choice == 'Description length': 
-    col_feat_choice = 'description_char'
+    feat_choice_value = df_new[col_feat_choice][0]
+    query_str = f'{col_feat_choice}=={feat_choice_value}'   
 
-
-feat_choice_value = dict_sing_feat[feat_choice]
-query_str = f'{col_feat_choice}=={feat_choice_value}'
+if feat_choice in list(dict_dummy_feat.keys()):
+    if feat_choice == 'Maturity size':
+        col_feat_choice = ['maturitysize_0','maturitysize_1','maturitysize_2','maturitysize_3']
+    elif feat_choice == 'Fur length':
+        col_feat_choice = ['furlength_0','furlength_1','furlength_2']
+    elif feat_choice == 'Health condition':
+        col_feat_choice = ['health_0','health_1','health_2']
+    elif feat_choice == 'Color pattern':
+        col_feat_choice = ['color_pattern_0','color_pattern_1','color_pattern_2']
+    feat_choice_value = dict_dummy_feat[feat_choice]
+    query_str = ""
+    for col,val in zip(col_feat_choice, feat_choice_value):
+        query_str = query_str + f'{col}=={val} and '
+    # remove the last unnecessary ' and ' in the query string
+    query_str = query_str[:-5]
 
 if plot_button_2:
     fig = plt.figure(figsize=(20,8))
@@ -369,7 +389,7 @@ if plot_button_2:
     )
     plt.xlabel('Adoptionspeed')
     #plt.ylabel('Accuracy')
-    plt.title(f'The Distribution of Adoption Speeds for your choice of {feat_choice}')#, fontsize=24)
+    plt.title(f'The Distribution of Adoption Speeds for your choice of {feat_choice}: {dict_input_feat[feat_choice]}')#, fontsize=24)
     for g in speed_plot_2.patches:
         speed_plot_2.annotate(format(g.get_height(), '.2f'),
                     (g.get_x() + g.get_width() / 2., g.get_height()),
