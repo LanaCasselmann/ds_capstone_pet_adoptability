@@ -1,0 +1,13 @@
+[theme]
+primaryColor="#fa9939" #"#F63366" red halo now in 'our' orange
+backgroundColor="#f2f1ec" #"#365b6d"
+secondaryBackgroundColor="#365b6d" #"#F0F2F6"
+textColor="#365b6d" #"#262730"
+font="sans serif"
+# color selection '#365b6d', dark blue
+# '#41c1ba', bright teal
+# '#289dd2', bright blue
+# '#6c9286', muddy green
+# '#f2f1ec', off-white
+# '#f7f7f7', light off-white
+# '#fa9939'] orange
