@@ -1,5 +1,15 @@
+![](images/paw_predictors.png)
+
 # Data Science Capstone Project: Predicting Adoption Speed for Shelter Pets
 Capstone project for the Data Practitioner Bootcamp at neufische - school and pool for digital talent
+
+## The Team
+We are a team of, Data Practitioner, trainees at Neuefische Institute. We are:
+
+- [Anna](https://github.com/Cazta) 
+- [Qurratulain](https://github.com/qurratulainee)
+- [Lana](https://github.com/LanaCasselmann)
+- [Jan](https://github.com/jan-schlautmann)
 
 ## Project Description:
 Animal shelters around the world are full and underfunded - how can they best use their limited resources? We built a Machine learning model predicting how fast sheltered cats and dogs are adopted, using data from Petfinder.my (via Kaggle). We incorporated the model into a Streamlit Web App for shelters, enabling them to predict the adoption speed and plan ahead.
