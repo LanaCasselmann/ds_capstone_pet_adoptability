@@ -1,7 +1,8 @@
 ![](images/paw_predictors.png)
 
 # Data Science Capstone Project: Predicting Adoption Speed for Shelter Pets
-Capstone project for the Data Practitioner Bootcamp at neufische - school and pool for digital talent
+Capstone project for the Data Practitioner Bootcamp at neufische - school and pool for digital talent  
+[Link to app](https://paw-predictor.streamlit.app/)
 
 ## The Team
 We are a team of, Data Practitioner, trainees at Neuefische Institute. We are:
