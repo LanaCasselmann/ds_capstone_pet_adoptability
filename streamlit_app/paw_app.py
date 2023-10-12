@@ -56,9 +56,7 @@ sns.set_theme(style="white", palette=colors, rc=custom_params)
 
 
 #share and preview settings
-#st.set_page_config(page_title="Paw Predictors", page_icon=Image.open('./notebooks/cat_dog_pair.png'))
-#st.set_page_config(page_title="Paw Predictors", page_icon=':dog:')
-st.set_page_config(layout = "wide", page_title="Paw Predictors", page_icon=Image.open('./streamlit_app/cat_dog_pair.png'))
+st.set_page_config(layout = "wide", page_title="Paw Predictors", page_icon=Image.open('../images/cat_dog_pair.png'))
 
 # define big font
 st.markdown("""
@@ -96,8 +94,8 @@ loaded_scaler = pickle.load(open('./streamlit_app/scaler.sav', 'rb'))
 # setting the headers 
 
 #st.write(os.getcwd())
-#ppp = Image.open('./notebooks/ppp_cropped.png')
-ppp = Image.open('./streamlit_app/cat_dog_pair.png')
+
+ppp = Image.open('../images/cat_dog_pair.png')
 st.sidebar.image(ppp)
 
 st.write("""
